@@ -2,41 +2,39 @@ import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from pathlib import Path
 
-IMAGE_SIZE = (256, 256)
+import parameters as params
 
 
 class DataLoader:
     def __init__(self):
-        self.data_dir_path = Path("./data/indoorCVPR_09/")
+        self.data_dir_path = Path("./data/indoorCVPR_09/Images/")
 
-    def get_paths(self):
-        image_paths = list(self.data_dir_path.glob('*/*.jpg'))
-        labels = [path.parent.name for path in image_paths]
-        label_names = sorted(set(labels))
-        label_to_index = {name: index for index, name in enumerate(label_names)}
-        labels = [label_to_index[label] for label in labels]
-        train_paths, test_paths, train_labels, test_labels = train_test_split(
-            image_paths, labels, test_size=0.2, stratify=labels, random_state=42
-        )
-        return train_paths, test_paths, train_labels, test_labels
+    def _split_dataset(self, dataset, test_size=0.2):
+        images, labels = [], []
+        for image, label in dataset:
+            images.append(image.numpy())
+            labels.append(label.numpy())
 
-    def load_and_preprocess_image(self, path, label):
-        image = tf.io.read_file(path)
-        image = tf.image.decode_jpeg(image, channels=3)
-        image = tf.image.resize(image, IMAGE_SIZE)
+        X_train, X_test, y_train, y_test = train_test_split(
+        images, labels, test_size=test_size, stratify=labels, random_state=42)
+
+        train_dataset = tf.data.Dataset.from_tensor_slices((X_train, y_train))
+        test_dataset = tf.data.Dataset.from_tensor_slices((X_test, y_test))
+        return train_dataset, test_dataset
+
+    def _preprocess_image(self, image, label):
+        image = tf.image.resize(image, params.image_size)
         image = (image / 127.5) - 1.0  # Normalize to [-1, 1]
         return image, label
 
-    def create_dataset(self, image_paths, labels, batch_size=32, shuffle=True):
-        dataset = tf.data.Dataset.from_tensor_slices((image_paths, labels))
-        dataset = dataset.map(self.load_and_preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
-        if shuffle:
-            dataset = dataset.shuffle(buffer_size=len(image_paths))
-            dataset = dataset.batch(batch_size).prefetch(buffer_size=tf.data.AUTOTUNE)
+    def _load_dataset(self):
+        dataset = tf.keras.preprocessing.image_dataset_from_directory(self.data_dir_path)
+        dataset = dataset.map(self._preprocess_image, num_parallel_calls=tf.data.AUTOTUNE)
         return dataset
 
     def get_train_test(self):
-        train_paths, test_paths, train_labels, test_labels = self.get_paths()
-        train_dataset = self.create_dataset(train_paths, train_labels)
-        test_dataset = self.create_dataset(test_paths, test_labels, shuffle=False)
-        return train_dataset,test_dataset
+        dataset = self._load_dataset()
+        train, test = self._split_dataset(dataset)
+        train = train.shuffle(buffer_size=train.cardinality())
+        train = train.batch(params.batch_size).prefetch(5)
+        return train, test
