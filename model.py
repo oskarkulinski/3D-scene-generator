@@ -15,7 +15,7 @@ class SceneGenerator:
 
         self.discriminator.trainable = False
         noise_input = tf.keras.layers.Input(shape=(params.noise_dim,))
-        label_input = tf.keras.layers.Input(shape=(1,))
+        label_input = tf.keras.layers.Input(shape=(params.num_classes,))
 
         generated_image = self.generator([noise_input, label_input])
         validity = self.discriminator([generated_image, label_input])
@@ -41,16 +41,15 @@ class SceneGenerator:
             #  Train Discriminator
             # ---------------------
 
-            # Select a random batch of real images and labels
-            real_images, real_labels = next(iter(train_dataset))
+            self.discriminator.trainable = True
 
+            real_images, real_labels = next(iter(train_dataset))
             batch_size = real_images.shape[0]
 
             # Generate a batch of fake images
             noise = self.generate_noise(batch_size, params.noise_dim)
             fake_labels = self.generate_labels(batch_size, params.num_classes)
             fake_images = self.generator.predict([noise, fake_labels])
-
 
             # Train the discriminator
             d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)
@@ -60,6 +59,8 @@ class SceneGenerator:
             # ---------------------
             #  Train Generator
             # ---------------------
+
+            self.discriminator.trainable = False
 
             # Generate a batch of noise and labels
             noise = self.generate_noise(batch_size, params.noise_dim)
@@ -87,9 +88,9 @@ class SceneGenerator:
         # Rescale images 0 - 1
         gen_images = 0.5 * gen_images + 0.5
 
-        fig, axs = plt.subplots(1, 10, figsize=(20, 2))
+        fig, axs = plt.subplots(1, 3, figsize=(20, 2))
         for i in range(params.num_classes):
-            axs[i].imshow(gen_images[i, :, :, 0], cmap='gray')
+            axs[i].imshow(gen_images[i, :, :, 0], cmap='rgb')
             axs[i].set_title(f"Class {sampled_labels[i]}")
             axs[i].axis('off')
         plt.show()
