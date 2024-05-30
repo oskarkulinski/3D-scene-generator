@@ -26,7 +26,11 @@ class SceneGenerator:
         return np.random.normal(0, 1, (batch_size, noise_dim))
 
     def generate_labels(self, batch_size, num_classes):
-        return np.random.randint(0, num_classes, batch_size).reshape(-1, 1)
+        labels = np.random.randint(0, num_classes, batch_size)
+        one_hot_labels = np.zeros((batch_size, num_classes))
+        one_hot_labels[np.arange(batch_size), labels] = 1
+
+        return one_hot_labels
 
     def train(self, train_dataset, epochs, batch_size, sample_interval):
         valid = np.ones((batch_size, 1))
@@ -46,6 +50,7 @@ class SceneGenerator:
             noise = self.generate_noise(batch_size, params.noise_dim)
             fake_labels = self.generate_labels(batch_size, params.num_classes)
             fake_images = self.generator.predict([noise, fake_labels])
+
 
             # Train the discriminator
             d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)
@@ -72,15 +77,18 @@ class SceneGenerator:
 
     # Function to save generated image samples
     def sample_images(self, epoch):
-        noise = self.generate_noise(10, params.noise_dim)
-        sampled_labels = np.arange(0, 10).reshape(-1, 1)
+        noise = self.generate_noise(params.num_classes, params.noise_dim)
+        sampled_labels = np.arange(0, params.num_classes).reshape(-1, 1)
+        one_hot_labels = np.zeros((params.num_classes, params.num_classes))
+        one_hot_labels[np.arange(params.num_classes), sampled_labels] = 1
+        sampled_labels = one_hot_labels
         gen_images = self.generator.predict([noise, sampled_labels])
 
         # Rescale images 0 - 1
         gen_images = 0.5 * gen_images + 0.5
 
         fig, axs = plt.subplots(1, 10, figsize=(20, 2))
-        for i in range(10):
+        for i in range(params.num_classes):
             axs[i].imshow(gen_images[i, :, :, 0], cmap='gray')
             axs[i].set_title(f"Class {sampled_labels[i]}")
             axs[i].axis('off')

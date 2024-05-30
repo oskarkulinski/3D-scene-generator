@@ -26,7 +26,7 @@ class DataLoader:
         label_list = []
         class_names = []
 
-        for class_name in sorted(os.listdir(DataLoader.data_dir_path)):
+        for class_name in sorted(os.listdir(DataLoader.data_dir_path))[:params.num_classes]:
             class_path = os.path.join(DataLoader.data_dir_path, class_name)
             if os.path.isdir(class_path):
                 class_names.append(class_name)

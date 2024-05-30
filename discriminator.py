@@ -5,7 +5,7 @@ import parameters as params
 
 def build_discriminator():
     image_input = tf.keras.Input(shape=(256, 256, 3), name='image_input')
-    label_input = tf.keras.Input(shape=(1,), name='label_input')
+    label_input = tf.keras.Input(shape=(params.num_classes,), name='label_input')
 
     # output dim set as square root of number of classes
     label_embedding = tf.keras.layers.Embedding(params.num_classes, 1)(label_input)
