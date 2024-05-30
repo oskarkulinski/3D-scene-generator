@@ -66,16 +66,16 @@ class DataLoader:
     @staticmethod
     def load_cached_data(cache_file='dataset_cache.npz'):
         print("Attempting to load cached data...")
-       # if os.path.exists(cache_file):
-        #    print("Loading cached data...")
-         #   data = np.load(cache_file)
-         #  images = data['images']
-          #  labels = data['labels']
-           # class_names = data['class_names']
-           # return images, labels, class_names
-        #else:
-        print("Failed to load cached data, loading from disk...")
-        return DataLoader._load_dataset()
+        if os.path.exists(cache_file):
+            print("Loading cached data...")
+            data = np.load(cache_file)
+            images = data['images']
+            labels = data['labels']
+            class_names = data['class_names']
+            return images, labels, class_names
+        else:
+            print("Failed to load cached data, loading from disk...")
+            return DataLoader._load_dataset()
 
     @staticmethod
     async def cache_dataset(images, labels, class_names, cache_file='dataset_cache.npz'):
