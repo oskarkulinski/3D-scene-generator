@@ -1,3 +1,5 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import parameters as params
 
@@ -18,3 +20,4 @@ def build_generator():
 
     model = tf.keras.Model(inputs=[noise_input, label_input], outputs=output)
     return model
+

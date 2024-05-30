@@ -1,7 +1,9 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-
+import datetime
 import parameters as params
 from discriminator import build_discriminator
 from generator import build_generator
@@ -35,9 +37,13 @@ class SceneGenerator:
 
         return one_hot_labels
 
-    def train(self, train_dataset, epochs, batch_size, sample_interval):
+    def train(self, train_dataset, epochs, batch_size, sample_interval, save_interval=10):
         valid = np.ones((batch_size, 1))
         fake = np.zeros((batch_size, 1))
+
+        current_datetime = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M")
+        folder_name = os.path.join("saved_models", current_datetime)
+        os.makedirs(folder_name, exist_ok=True)
 
         for epoch in range(epochs):
             # ---------------------
@@ -78,6 +84,18 @@ class SceneGenerator:
             # If at save interval, save generated image samples
             if epoch % sample_interval == 0:
                 self.sample_images(epoch)
+
+            if epoch != 0 and epoch % save_interval == 0:
+                sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
+                os.makedirs(sub_folder_name, exist_ok=True)
+                self.save_models(sub_folder_name, epoch)
+
+    def save_models(self, folder_name, epoch):
+        discriminator_path = os.path.join(folder_name, "discriminator.h5")
+        generator_path = os.path.join(folder_name, "generator.h5")
+        self.discriminator.save(discriminator_path)
+        self.generator.save(generator_path)
+        print(f"Models saved for epoch {epoch} at {folder_name}")
 
     # Function to save generated image samples
     def sample_images(self, epoch):
