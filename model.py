@@ -109,7 +109,7 @@ class SceneGenerator:
         # Rescale images 0 - 1
         gen_images = 0.5 * gen_images + 0.5
 
-        fig, axs = plt.subplots(1, 3, figsize=(20, 2))
+        fig, axs = plt.subplots(1, 3, figsize=(5, 2))
         for i in range(params.num_classes):
             axs[i].imshow(gen_images[i, :, :, 0], cmap='hsv')
             axs[i].set_title(f"Class {sampled_labels[i]}")
