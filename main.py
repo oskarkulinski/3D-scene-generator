@@ -8,10 +8,12 @@ from generator import build_generator
 from model import SceneGenerator
 from data_loader import DataLoader
 
-data_loader = DataLoader()
 
-train, test = data_loader.get_train_test()
+train, test = DataLoader.get_train_test()
 
 model = SceneGenerator()
 
 model.train(train, params.epochs, params.batch_size, params.sample_interval)
+
+model.sample_images(25)
+
