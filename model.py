@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import parameters as params
 from discriminator import build_discriminator
 from generator import build_generator
+import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 class SceneGenerator:
@@ -90,7 +93,7 @@ class SceneGenerator:
 
         fig, axs = plt.subplots(1, 3, figsize=(20, 2))
         for i in range(params.num_classes):
-            axs[i].imshow(gen_images[i, :, :, 0], cmap='rgb')
+            axs[i].imshow(gen_images[i, :, :, 0], cmap='hsv')
             axs[i].set_title(f"Class {sampled_labels[i]}")
             axs[i].axis('off')
         plt.show()
