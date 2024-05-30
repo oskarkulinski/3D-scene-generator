@@ -21,6 +21,7 @@ class DataLoader:
 
     @staticmethod
     def _load_dataset():
+        print("Loading dataset...")
         image_list = []
         label_list = []
         class_names = []
@@ -63,6 +64,7 @@ class DataLoader:
 
     @staticmethod
     def load_cached_data(cache_file='dataset_cache.npz'):
+        print("Loading cached data...")
         if os.path.exists(cache_file):
             data = np.load(cache_file)
             images = data['images']
@@ -73,5 +75,6 @@ class DataLoader:
             return DataLoader._load_dataset()
 
     @staticmethod
-    def cache_dataset(images, labels, class_names, cache_file='dataset_cache.npz'):
+    async def cache_dataset(images, labels, class_names, cache_file='dataset_cache.npz'):
+        print("Caching data...")
         np.savez_compressed(cache_file, images=images, labels=labels, class_names=class_names)
