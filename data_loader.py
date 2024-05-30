@@ -50,13 +50,28 @@ class DataLoader:
 
         # One-hot encode labels
         labels = tf.keras.utils.to_categorical(labels, num_classes=len(class_names))
-
+        DataLoader.cache_dataset(images, labels, class_names)
         return images, labels, class_names
 
     @staticmethod
     def get_train_test():
-        images, labels, class_names = DataLoader._load_dataset()
+        images, labels, class_names = DataLoader.load_cached_data()
         train, test = DataLoader._split_dataset(images, labels, class_names)
         train = train.shuffle(buffer_size=train.cardinality())
         train = train.batch(params.batch_size).prefetch(5)
         return train, test
+
+    @staticmethod
+    def load_cached_data(cache_file='dataset_cache.npz'):
+        if os.path.exists(cache_file):
+            data = np.load(cache_file)
+            images = data['images']
+            labels = data['labels']
+            class_names = data['class_names']
+            return images, labels, class_names
+        else:
+            return DataLoader._load_dataset()
+
+    @staticmethod
+    def cache_dataset(images, labels, class_names, cache_file='dataset_cache.npz'):
+        np.savez_compressed(cache_file, images=images, labels=labels, class_names=class_names)
