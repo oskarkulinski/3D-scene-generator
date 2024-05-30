@@ -21,7 +21,7 @@ class DataLoader:
 
     @staticmethod
     def _load_dataset():
-        print("Loading dataset...")
+        print("Loading dataset from disk...")
         image_list = []
         label_list = []
         class_names = []
@@ -60,12 +60,14 @@ class DataLoader:
         train, test = DataLoader._split_dataset(images, labels, class_names)
         train = train.shuffle(buffer_size=train.cardinality())
         train = train.batch(params.batch_size).prefetch(5)
+        print("Loaded data successfully")
         return train, test
 
     @staticmethod
     def load_cached_data(cache_file='dataset_cache.npz'):
-        print("Loading cached data...")
+        print("Attempting to load cached data...")
         if os.path.exists(cache_file):
+            print("Loading cached data...")
             data = np.load(cache_file)
             images = data['images']
             labels = data['labels']
