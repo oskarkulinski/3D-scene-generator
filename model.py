@@ -97,7 +97,13 @@ class SceneGenerator:
         self.generator.save(generator_path)
         print(f"Models saved for epoch {epoch} at {folder_name}")
 
-    # Function to save generated image samples
+    def load_models(self, folder_name):
+        discriminator_path = os.path.join(folder_name, "discriminator.h5")
+        generator_path = os.path.join(folder_name, "generator.h5")
+        self.discriminator.load_weights(discriminator_path)
+        self.generator.load_weights(generator_path)
+        print(f"Models loaded from {folder_name}")
+
     def sample_images(self, epoch):
         noise = self.generate_noise(params.num_classes, params.noise_dim)
         sampled_labels = np.arange(0, params.num_classes).reshape(-1, 1)
