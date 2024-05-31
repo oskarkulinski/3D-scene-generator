@@ -23,8 +23,8 @@ def build_discriminator():
 
     flatten = tf.keras.layers.Flatten()(concatenated)
     #dense_1 = tf.keras.layers.Dense(128, activation='relu')(flatten)
-    dense_2 = tf.keras.layers.Dense(64, activation='relu')(flatten)
-    output = tf.keras.layers.Dense(1, activation='sigmoid')(dense_2)
+    dense_2 = tf.keras.layers.Dense(32, activation='relu')(flatten)
+    output = tf.keras.layers.Dense(1, activation='tanh')(dense_2)
     model = tf.keras.Model(inputs=[image_input, label_input], outputs=output)
     return model
 
