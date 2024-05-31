@@ -66,7 +66,7 @@ class SceneGenerator:
                 noise = self.generate_noise(batch_size, params.noise_dim)
                 fake_labels = self.generate_labels(batch_size, params.num_classes)
                 fake_images = self.generator.predict([noise, fake_labels])
-                print(fake_labels)
+                #print(fake_labels)
 
                 # Train the discriminator
                 d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)

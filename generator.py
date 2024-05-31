@@ -14,9 +14,9 @@ def build_generator():
     label_embedding = tf.keras.layers.Flatten()(label_embedding)
 
     concatenate = tf.keras.layers.Concatenate()([noise_input, label_embedding])
-    dense_1 = tf.keras.layers.Dense(128, activation='relu')(concatenate)
-    dense_2 = tf.keras.layers.Dense(64 * 64 * 3, activation='relu')(dense_1)
-    reshape = tf.keras.layers.Reshape((64, 64, 3))(dense_2)
+    dense_2 = tf.keras.layers.Dense(32 * 32 * 3, activation='relu')(concatenate)
+    normal = tf.keras.layers.BatchNormalization(momentum=0.8)(dense_2)
+    reshape = tf.keras.layers.Reshape((32, 32, 3))(normal)
     upsample_1 = tf.keras.layers.UpSampling2D(size=(2, 2))(reshape)
     conv_1 = tf.keras.layers.Conv2D(64, 3, padding='same', activation='relu')(upsample_1)
     upsample_2 = tf.keras.layers.UpSampling2D(size=(2, 2))(conv_1)

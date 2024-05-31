@@ -1,6 +1,7 @@
-num_classes = 3
-image_size = (256, 256)
-batch_size = 64
+num_classes = 5
+image_height = 128
+image_width = 128
+batch_size = 32
 epochs = 1000
-sample_interval = 10
+sample_interval = 50
 noise_dim = 100

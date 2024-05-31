@@ -7,7 +7,7 @@ import parameters as params
 
 
 class DataLoader:
-    data_dir_path = "./data/indoorCVPR_09/Images/"
+    data_dir_path = "./selected_data"
 
     @staticmethod
     def _split_dataset(images, labels, class_names, test_size=0.2):
@@ -35,7 +35,7 @@ class DataLoader:
                     image_path = os.path.join(class_path, image_name)
                     try:
                         # Load and preprocess the image
-                        image = tf.keras.utils.load_img(image_path, target_size=params.image_size,
+                        image = tf.keras.utils.load_img(image_path, target_size=(params.image_height, params.image_width),
                                                         keep_aspect_ratio=True)
                         image_array = tf.keras.utils.img_to_array(image)
                         image_array = (image_array / 127.5) - 1.0  # Normalize to [-1, 1]
