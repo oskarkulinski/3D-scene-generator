@@ -1,15 +1,16 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-import tensorflow as tf
+import logging
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
+
 import parameters as params
 from discriminator import build_discriminator
 from generator import build_generator
-import os
+import logging
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import tensorflow as tf
 
 
 class SceneGenerator:
@@ -45,40 +46,46 @@ class SceneGenerator:
         folder_name = os.path.join("saved_models", current_datetime)
         os.makedirs(folder_name, exist_ok=True)
 
+        d_loss = 0
+        g_loss = 0
+
         for epoch in range(epochs):
-            # ---------------------
-            #  Train Discriminator
-            # ---------------------
+            for real_images, real_labels in train_dataset:
+                # ---------------------
+                #  Train Discriminator
+                # ---------------------
 
-            self.discriminator.trainable = True
+                self.discriminator.trainable = True
 
-            real_images, real_labels = next(iter(train_dataset))
-            batch_size = real_images.shape[0]
+                batch_size = real_images.shape[0]
+                if batch_size != valid.shape[0]:
+                    valid = np.ones((batch_size, 1))
+                    fake = np.zeros((batch_size, 1))
 
-            # Generate a batch of fake images
-            noise = self.generate_noise(batch_size, params.noise_dim)
-            fake_labels = self.generate_labels(batch_size, params.num_classes)
-            fake_images = self.generator.predict([noise, fake_labels])
+                # Generate a batch of fake images
+                noise = self.generate_noise(batch_size, params.noise_dim)
+                fake_labels = self.generate_labels(batch_size, params.num_classes)
+                fake_images = self.generator.predict([noise, fake_labels])
 
-            # Train the discriminator
-            d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)
-            d_loss_fake = self.discriminator.train_on_batch([fake_images, fake_labels], fake)
-            d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
+                # Train the discriminator
+                d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)
+                d_loss_fake = self.discriminator.train_on_batch([fake_images, fake_labels], fake)
+                d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
-            # ---------------------
-            #  Train Generator
-            # ---------------------
+                # ---------------------
+                #  Train Generator
+                # ---------------------
 
-            self.discriminator.trainable = False
+                self.discriminator.trainable = False
 
-            # Generate a batch of noise and labels
-            noise = self.generate_noise(batch_size, params.noise_dim)
-            sampled_labels = self.generate_labels(batch_size, params.num_classes)
+                # Generate a batch of noise and labels
+                noise = self.generate_noise(batch_size, params.noise_dim)
+                sampled_labels = self.generate_labels(batch_size, params.num_classes)
 
-            # Train the generator (to have the discriminator label samples as valid)
-            g_loss = self.gan.train_on_batch([noise, sampled_labels], valid)
+                # Train the generator (to have the discriminator label samples as valid)
+                g_loss = self.gan.train_on_batch([noise, sampled_labels], valid)
 
-            # Print the progress
+
             print(f"{epoch} [D loss: {d_loss[0]}, acc.: {100 * d_loss[1]:.2f}%] [G loss: {g_loss}]")
 
             # If at save interval, save generated image samples
