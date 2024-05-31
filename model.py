@@ -66,6 +66,7 @@ class SceneGenerator:
                 noise = self.generate_noise(batch_size, params.noise_dim)
                 fake_labels = self.generate_labels(batch_size, params.num_classes)
                 fake_images = self.generator.predict([noise, fake_labels])
+                print(fake_labels)
 
                 # Train the discriminator
                 d_loss_real = self.discriminator.train_on_batch([real_images, real_labels], valid)
@@ -112,10 +113,7 @@ class SceneGenerator:
 
     def sample_images(self, epoch):
         noise = self.generate_noise(params.num_classes, params.noise_dim)
-        sampled_labels = np.arange(0, params.num_classes).reshape(-1, 1)
-        one_hot_labels = np.zeros((params.num_classes, params.num_classes))
-        one_hot_labels[np.arange(params.num_classes), sampled_labels] = 1
-        sampled_labels = one_hot_labels
+        sampled_labels = self.generate_labels(3, params.num_classes)
         gen_images = self.generator.predict([noise, sampled_labels])
 
         # Rescale images 0 - 1
