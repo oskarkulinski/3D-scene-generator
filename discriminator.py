@@ -9,9 +9,9 @@ def build_discriminator():
     image_input = tf.keras.Input(shape=(params.image_height, params.image_width, 3), name='image_input')
     label_input = tf.keras.Input(shape=(params.num_classes,), name='label_input')
 
-    conv2d_1 = tf.keras.layers.Conv2D(32, kernel_size=3, strides=2, padding='same')(image_input)
+    conv2d_1 = tf.keras.layers.Conv2D(16, kernel_size=3, strides=2, padding='same')(image_input)
     pool_1 = tf.keras.layers.AveragePooling2D(pool_size=2, strides=2)(conv2d_1)
-    conv2d_2 = tf.keras.layers.Conv2D(64, kernel_size=3, strides=2, padding='same')(pool_1)
+    conv2d_2 = tf.keras.layers.Conv2D(32, kernel_size=3, strides=2, padding='same')(pool_1)
     pool_2 = tf.keras.layers.AveragePooling2D(pool_size=2, strides=2)(conv2d_2)
 
     # output dim set as square root of number of classes
