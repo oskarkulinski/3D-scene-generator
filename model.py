@@ -85,7 +85,6 @@ class SceneGenerator:
                 # Train the generator (to have the discriminator label samples as valid)
                 g_loss = self.gan.train_on_batch([noise, sampled_labels], valid)
 
-
             print(f"{epoch} [D loss: {d_loss[0]}, acc.: {100 * d_loss[1]:.2f}%] [G loss: {g_loss}]")
 
             # If at save interval, save generated image samples
@@ -97,7 +96,7 @@ class SceneGenerator:
                 os.makedirs(sub_folder_name, exist_ok=True)
                 self.save_models(sub_folder_name, epoch)
 
-    def save_models(self, folder_name, epoch):
+    async def save_models(self, folder_name, epoch):
         discriminator_path = os.path.join(folder_name, "discriminator.h5")
         generator_path = os.path.join(folder_name, "generator.h5")
         self.discriminator.save(discriminator_path)
@@ -124,8 +123,7 @@ class SceneGenerator:
 
         fig, axs = plt.subplots(1, 3, figsize=(5, 2))
         for i in range(params.num_classes):
-            axs[i].imshow(gen_images[i, :, :, 0])
+            axs[i].imshow(gen_images[i])
             axs[i].set_title(f"Class {sampled_labels[i]}")
             axs[i].axis('off')
         plt.show()
-
