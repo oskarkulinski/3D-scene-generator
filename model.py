@@ -124,7 +124,7 @@ class SceneGenerator:
 
         fig, axs = plt.subplots(1, 3, figsize=(5, 2))
         for i in range(params.num_classes):
-            axs[i].imshow(gen_images[i, :, :, 0], cmap='hsv')
+            axs[i].imshow(gen_images[i, :, :, 0])
             axs[i].set_title(f"Class {sampled_labels[i]}")
             axs[i].axis('off')
         plt.show()
