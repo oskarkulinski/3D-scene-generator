@@ -92,10 +92,10 @@ class SceneGenerator:
             if epoch % sample_interval == 0:
                 self.sample_images(epoch)
 
-            #if epoch != 0 and epoch % save_interval  == 0:
-             #   sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
-              #  os.makedirs(sub_folder_name, exist_ok=True)
-               # self.save_models(sub_folder_name, epoch)
+            if epoch != 0 and epoch % save_interval  == 0:
+                sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
+                os.makedirs(sub_folder_name, exist_ok=True)
+                self.save_models(sub_folder_name, epoch)
 
     async def save_models(self, folder_name, epoch):
         discriminator_path = os.path.join(folder_name, "discriminator.h5")
