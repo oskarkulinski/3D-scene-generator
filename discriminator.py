@@ -24,7 +24,7 @@ def build_discriminator():
     conv2d_2 = tf.keras.layers.BatchNormalization()(conv2d_2)
     conv2d_2 = tf.keras.layers.LeakyReLU(alpha=0.2)(conv2d_2)
 
-    conv2d_3 = tf.keras.layers.Conv2D(256, kernel_size=3, strides=2, padding='same')(conv2d_2)
+    conv2d_3 = tf.keras.layers.Conv2D(128, kernel_size=3, strides=2, padding='same')(conv2d_2)
     conv2d_3 = tf.keras.layers.BatchNormalization()(conv2d_3)
     conv2d_3 = tf.keras.layers.LeakyReLU(alpha=0.2)(conv2d_3)
 

@@ -1,3 +1,5 @@
+import asyncio
+
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
@@ -17,4 +19,4 @@ model.train(train, params.epochs, params.batch_size, params.sample_interval, 50)
 
 model.sample_images(25)
 
-model.save_models("saved_models", params.epochs)
+asyncio.run(model.save_models("saved_models", epoch=params.epochs))
