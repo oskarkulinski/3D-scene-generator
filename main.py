@@ -13,7 +13,7 @@ train, test = DataLoader.get_train_test()
 
 model = SceneGenerator()
 
-model.train(train, params.epochs, params.batch_size, params.sample_interval)
+model.train(train, params.epochs, params.batch_size, params.sample_interval, 50)
 
 model.sample_images(25)
 

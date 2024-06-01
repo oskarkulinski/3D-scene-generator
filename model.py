@@ -17,7 +17,9 @@ class SceneGenerator:
     def __init__(self):
         self.discriminator = build_discriminator()
         self.generator = build_generator()
-        self.discriminator.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+        discriminator_optimizer = tf.keras.optimizers.Adam(1.5e-4,0.5)
+        self.discriminator.compile(loss='binary_crossentropy', optimizer=discriminator_optimizer, metrics=['accuracy'])
 
         self.discriminator.trainable = False
         noise_input = tf.keras.layers.Input(shape=(params.noise_dim,))
@@ -89,10 +91,10 @@ class SceneGenerator:
             print(f"{epoch} [D loss: {d_loss[0]}, acc.: {100 * d_loss[1]:.2f}%] [G loss: {g_loss}]")
 
             # If at save interval, save generated image samples
-            if epoch % sample_interval == 0:
+            if epoch % (sample_interval//5) == 0:
                 self.sample_images(epoch)
 
-            if epoch != 0 and epoch % save_interval  == 0:
+            if epoch != 0 and epoch % save_interval == 0:
                 sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
                 os.makedirs(sub_folder_name, exist_ok=True)
                 self.save_models(sub_folder_name, epoch)
@@ -122,6 +124,6 @@ class SceneGenerator:
         fig, axs = plt.subplots(1, 5, figsize=(5, 2))
         for i in range(params.num_classes):
             axs[i].imshow(gen_images[i])
-            axs[i].set_title(f"Class {sampled_labels[i][sampled_labels[i] == 1]}")
+            axs[i].set_title(f"{sampled_labels[i]}")
             axs[i].axis('off')
         plt.show()
