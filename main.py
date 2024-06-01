@@ -11,6 +11,8 @@ from model import SceneGenerator
 from data_loader import DataLoader
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
+tf.random.set_seed(44)
+
 train, test = DataLoader.get_train_test()
 
 model = SceneGenerator()

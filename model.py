@@ -20,7 +20,7 @@ class SceneGenerator:
         self.discriminator = build_discriminator()
         self.generator = build_generator()
 
-        self.generator_optimizer = tf.keras.optimizers.Adam(1.5e-4,0.5)
+        self.generator_optimizer = tf.keras.optimizers.Adam(0.001,0.5)
         self.discriminator_optimizer = tf.keras.optimizers.Adam(0.5e-4,0.5)
 
         noise_input = tf.keras.layers.Input(shape=(params.noise_dim,))
@@ -101,7 +101,7 @@ class SceneGenerator:
             print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}]")
 
             # If at save interval, save generated image samples
-            if epoch % (sample_interval // 5) == 0:
+            if epoch % sample_interval == 0:
                 self.sample_images(epoch)
 
             if epoch != 0 and epoch % save_interval == 0:
