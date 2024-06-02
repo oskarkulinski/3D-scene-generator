@@ -35,8 +35,7 @@ class DataLoader:
                     image_path = os.path.join(class_path, image_name)
                     try:
                         # Load and preprocess the image
-                        image = tf.keras.utils.load_img(image_path, target_size=(params.image_height, params.image_width),
-                                                        keep_aspect_ratio=True)
+                        image = tf.keras.utils.load_img(image_path, target_size=(params.image_height, params.image_width))
                         image_array = tf.keras.utils.img_to_array(image)
                         image_array = (image_array / 255) # Normalize to [-1, 1]
                         image_list.append(image_array)
