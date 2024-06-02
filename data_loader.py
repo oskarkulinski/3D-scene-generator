@@ -37,7 +37,7 @@ class DataLoader:
                         # Load and preprocess the image
                         image = tf.keras.utils.load_img(image_path, target_size=(params.image_height, params.image_width))
                         image_array = tf.keras.utils.img_to_array(image)
-                        image_array = (image_array / 255) # Normalize to [-1, 1]
+                        image_array = (image_array / 127.5) - 1 # Normalize to [-1, 1]
                         image_list.append(image_array)
 
                         label_list.append(class_names.index(class_name))
