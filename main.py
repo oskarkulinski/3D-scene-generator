@@ -21,4 +21,4 @@ model.train(train, params.epochs, params.batch_size, params.sample_interval, 50)
 
 model.sample_images(25)
 
-asyncio.run(model.save_models("saved_models", epoch=params.epochs))
+model.save_models("saved_models", epoch=params.epochs)

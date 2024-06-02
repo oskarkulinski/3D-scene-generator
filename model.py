@@ -109,7 +109,7 @@ class SceneGenerator:
                 os.makedirs(sub_folder_name, exist_ok=True)
                 self.save_models(sub_folder_name, epoch)
 
-    async def save_models(self, folder_name, epoch):
+    def save_models(self, folder_name, epoch):
         discriminator_path = os.path.join(folder_name, "discriminator.h5")
         generator_path = os.path.join(folder_name, "generator.h5")
         self.discriminator.save(discriminator_path)
