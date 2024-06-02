@@ -129,7 +129,7 @@ class SceneGenerator:
         gen_images = self.generator.predict([noise, sampled_labels])
 
         # Rescale images 0 - 1
-        #gen_images = 0.5 * gen_images + 0.5
+        gen_images = 0.5 * gen_images + 0.5
 
         fig, axs = plt.subplots(1, 5, figsize=(5, 2))
         for i in range(params.num_classes):
