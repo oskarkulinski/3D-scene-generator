@@ -22,7 +22,8 @@ classes = []
 i = 0
 for cls in os.listdir("./selected_data"):
     classes.append(cls)
-    print("{cls} --> {i}".format(cls=cls, i=i), end="")
+    print("{cls} --> {i}".format(cls=cls, i=i))
+    i += 1
 while True:
     number = input()
     if number in range(0, len(classes)):
@@ -33,3 +34,5 @@ while True:
         model.generator.predict([noise, labels])()
     else:
         break
+
+# TODO add showing of pictures, add endline when choosing class, add incrementing of i
