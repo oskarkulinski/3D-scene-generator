@@ -11,7 +11,6 @@ class DataLoader:
 
     @staticmethod
     def _split_dataset(images, labels, class_names, test_size=0.2):
-
         X_train, X_test, y_train, y_test = train_test_split(
             images, labels, test_size=test_size, stratify=labels, random_state=42)
 
@@ -37,7 +36,7 @@ class DataLoader:
                         # Load and preprocess the image
                         image = tf.keras.utils.load_img(image_path, target_size=(params.image_height, params.image_width))
                         image_array = tf.keras.utils.img_to_array(image)
-                        image_array = (image_array / 127.5) - 1 # Normalize to [-1, 1]
+                        image_array = (image_array / 127.5) - 1  # Normalize to [-1, 1]
                         image_list.append(image_array)
 
                         label_list.append(class_names.index(class_name))
@@ -57,8 +56,8 @@ class DataLoader:
     def get_train_test():
         images, labels, class_names = DataLoader.load_cached_data()
         train, test = DataLoader._split_dataset(images, labels, class_names)
-        train = train.shuffle(buffer_size=train.cardinality())
-        train = train.batch(params.batch_size).prefetch(5)
+        train = train.shuffle(buffer_size=tf.data.experimental.cardinality(train).numpy())
+        train = train.batch(params.batch_size).prefetch(tf.data.experimental.AUTOTUNE)
         print("Loaded data successfully")
         return train, test
 
