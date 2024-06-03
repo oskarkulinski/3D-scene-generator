@@ -33,8 +33,13 @@ def build_generator():
     drop_3 = tf.keras.layers.Dropout(0.25)(conv_3)
     normal_4 = tf.keras.layers.BatchNormalization(momentum=0.8)(drop_3)
 
-    upsample_4 = tf.keras.layers.UpSampling2D(size=(2, 2))(normal_4)  # 128x128
-    conv_4 = tf.keras.layers.Conv2DTranspose(128, kernel_size=3, padding='same', activation='relu')(upsample_4)
+    upsample_4 = tf.keras.layers.UpSampling2D(size=(2, 2))(normal_3)  # 64x64
+    conv_4 = tf.keras.layers.Conv2DTranspose(64, kernel_size=3, padding='same', activation='relu')(upsample_4)
+    drop_4 = tf.keras.layers.Dropout(0.25)(conv_4)
+    normal_5 = tf.keras.layers.BatchNormalization(momentum=0.8)(drop_4)
+
+    upsample_5 = tf.keras.layers.UpSampling2D(size=(2, 2))(normal_5)  # 128x128
+    conv_4 = tf.keras.layers.Conv2DTranspose(128, kernel_size=3, padding='same', activation='relu')(upsample_5)
     drop_4 = tf.keras.layers.Dropout(0.25)(conv_4)
     normal_5 = tf.keras.layers.BatchNormalization(momentum=0.8)(drop_4)
 
