@@ -8,14 +8,14 @@ import parameters as params
 def build_generator():
     noise_input = tf.keras.Input(shape=(params.noise_dim,), name='noise_input')
     label_input = tf.keras.Input(shape=params.num_classes, name='label_input')
-
-    label_embedding = tf.keras.layers.Embedding(params.num_classes, 5)(label_input)
-    label_embedding = tf.keras.layers.Dense(92, activation='relu')(label_embedding)
+    # num_classes * output_dim + noise_dim = reshape total size
+    label_embedding = tf.keras.layers.Embedding(params.num_classes, 44)(label_input)
     label_embedding = tf.keras.layers.Flatten()(label_embedding)
+    print(label_embedding.shape)
 
     concatenated_input = tf.keras.layers.Concatenate()([noise_input, label_embedding])
 
-    reshape = tf.keras.layers.Reshape((8, 8, 3))(concatenated_input)
+    reshape = tf.keras.layers.Reshape((8, 8, 5))(concatenated_input)
 
     conv_1 = tf.keras.layers.Conv2DTranspose(256, kernel_size=3, strides=2,
                                              padding='same', activation='relu')(reshape)
