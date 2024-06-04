@@ -11,13 +11,12 @@ def build_generator():
     # num_classes * output_dim + noise_dim = reshape total size
     label_embedding = tf.keras.layers.Embedding(params.num_classes, 44)(label_input)
     label_embedding = tf.keras.layers.Flatten()(label_embedding)
-    print(label_embedding.shape)
 
     concatenated_input = tf.keras.layers.Concatenate()([noise_input, label_embedding])
 
     reshape = tf.keras.layers.Reshape((8, 8, 5))(concatenated_input)
 
-    conv_1 = tf.keras.layers.Conv2DTranspose(256, kernel_size=3, strides=2,
+    conv_1 = tf.keras.layers.Conv2DTranspose(512, kernel_size=3, strides=2,
                                              padding='same', activation='relu')(reshape)
     normal_2 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv_1)
 
@@ -29,11 +28,12 @@ def build_generator():
                                              padding='same', activation='relu')(normal_3)
     normal_4 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv_3)
 
-    conv_4 = tf.keras.layers.Conv2DTranspose(128, kernel_size=3, strides=2,
-                                             padding='same', activation='relu')(normal_4)
-    normal_5 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv_4)
+    #conv_4 = tf.keras.layers.Conv2DTranspose(128, kernel_size=3, strides=2,
+     #                                        padding='same', activation='relu')(normal_4)
+    #normal_5 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv_4)
 
-    output = tf.keras.layers.Conv2D(3, kernel_size=3, padding='same', activation='tanh')(normal_5)
+    output = tf.keras.layers.Conv2DTranspose(3, kernel_size=3, strides=2,
+                                    padding='same', activation='tanh')(normal_4)
 
     model = tf.keras.Model(inputs=[noise_input, label_input], outputs=output)
     return model
