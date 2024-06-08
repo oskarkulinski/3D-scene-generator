@@ -125,16 +125,16 @@ class SceneGenerator:
 
     def sample_images(self, epoch):
         noise = self.generate_noise(params.num_classes, params.noise_dim)
-        sampled_labels = self.generate_labels(5, params.num_classes)
+        sampled_labels = self.generate_labels(params.num_classes, params.num_classes)
         gen_images = self.generator.predict([noise, sampled_labels])
 
         # Rescale images 0 - 1
         gen_images = 0.5 * gen_images + 0.5
 
-        fig, axs = plt.subplots(1, 5, figsize=(5, 2))
+        fig, axs = plt.subplots(1, params.num_classes, figsize=(params.num_classes, 2))
         for i in range(params.num_classes):
             index = 0
-            for j in range(5):
+            for j in range(params.num_classes):
                 if sampled_labels[j][i] == 1:
                     index = j
                     break

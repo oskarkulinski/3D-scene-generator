@@ -13,7 +13,7 @@ def build_generator():
     noise_reshape = tf.keras.layers.Reshape((8, 8, 507))(noise_reshape)
 
     label_embedding = tf.keras.layers.Embedding(params.num_classes, 64)(label_input)
-    label_embedding = tf.keras.layers.Reshape((8,8,5))(label_embedding)
+    label_embedding = tf.keras.layers.Reshape((8,8,params.num_classes))(label_embedding)
 
     concatenated_input = tf.keras.layers.Concatenate()([noise_reshape, label_embedding])
 
