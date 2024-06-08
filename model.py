@@ -3,18 +3,22 @@ import logging
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
-
+from PIL import Image
 import parameters as params
 from discriminator import build_discriminator
 from generator import build_generator
 import logging
-
+SEED_SIZE = 100
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 
 tf.random.set_seed(42)
-
-
+GENERATE_RES = 4
+GENERATE_SQUARE = 32 * GENERATE_RES
+PREVIEW_ROWS = 4
+PREVIEW_COLS = 7
+PREVIEW_MARGIN = 16
+OUTPUT_PATH = r'C:\Users\kajet\OneDrive\Pulpit\PSI\Projekt\3D-scene-generator\Output'
 class SceneGenerator:
     def __init__(self):
         self.discriminator = build_discriminator()
@@ -70,13 +74,13 @@ class SceneGenerator:
 
                     # Generate a batch of fake images
                     noise = self.generate_noise(batch_size, params.noise_dim)
-                    fake_labels = self.generate_labels(batch_size, params.num_classes)
+                    #fake_labels = self.generate_labels(batch_size, params.num_classes)
                     #fake_images = self.generator.predict([noise, fake_labels])
 
-                    fake_images = self.generator([noise, fake_labels], training=True)
+                    fake_images = self.generator(noise, training=True)
 
-                    real_output = self.discriminator([real_images, real_labels], training=True)
-                    fake_output = self.discriminator([fake_images, fake_labels], training=True)
+                    real_output = self.discriminator(real_images, training=True)
+                    fake_output = self.discriminator(fake_images, training=True)
 
                     gen_loss = self.generator_loss(fake_output)
                     disc_loss = self.discriminator_loss(real_output, fake_output)
@@ -99,11 +103,10 @@ class SceneGenerator:
             g_loss: float = sum(gen_loss_list) / len(gen_loss_list)
             d_loss: float = sum(disc_loss_list) / len(disc_loss_list)
             print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}]")
-
+            self.save_images(epoch, np.random.normal(0, 1, (PREVIEW_ROWS * PREVIEW_COLS, SEED_SIZE)))
             # If at save interval, save generated image samples
-            if epoch % sample_interval == 0:
-                self.sample_images(epoch)
-
+            # if epoch % sample_interval == 0:
+            #    self.sample_images(epoch)
             if epoch != 0 and epoch % save_interval == 0:
                 sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
                 os.makedirs(sub_folder_name, exist_ok=True)
@@ -125,16 +128,16 @@ class SceneGenerator:
 
     def sample_images(self, epoch):
         noise = self.generate_noise(params.num_classes, params.noise_dim)
-        sampled_labels = self.generate_labels(5, params.num_classes)
+        sampled_labels = self.generate_labels(params.num_classes, params.num_classes)
         gen_images = self.generator.predict([noise, sampled_labels])
 
         # Rescale images 0 - 1
         gen_images = 0.5 * gen_images + 0.5
 
-        fig, axs = plt.subplots(1, 5, figsize=(5, 2))
+        fig, axs = plt.subplots(1, params.num_classes, figsize=(params.num_classes, 2))
         for i in range(params.num_classes):
             index = 0
-            for j in range(5):
+            for j in range(params.num_classes):
                 if sampled_labels[j][i] == 1:
                     index = j
                     break
@@ -142,3 +145,30 @@ class SceneGenerator:
             axs[i].set_title(f"{index}")
             axs[i].axis('off')
         plt.show()
+
+    def save_images(self, cnt, noise):
+        for i in range(params.num_classes):
+            image_array = np.full((
+                PREVIEW_MARGIN + (PREVIEW_ROWS * (GENERATE_SQUARE + PREVIEW_MARGIN)),
+                PREVIEW_MARGIN + (PREVIEW_COLS * (GENERATE_SQUARE + PREVIEW_MARGIN)), 3),
+                255, dtype=np.uint8)
+
+            size = PREVIEW_ROWS * PREVIEW_COLS
+            noise = np.random.normal(0, 1, (size, params.noise_dim))
+            gen_images = self.generator.predict(noise)
+            generated_images = 0.5 * gen_images + 0.5
+
+            image_count = 0
+            for row in range(PREVIEW_ROWS):
+                for col in range(PREVIEW_COLS):
+                    r = row * (GENERATE_SQUARE + 16) + PREVIEW_MARGIN
+                    c = col * (GENERATE_SQUARE + 16) + PREVIEW_MARGIN
+                    image_array[r:r + GENERATE_SQUARE, c:c + GENERATE_SQUARE] = generated_images[image_count] * 255
+                    image_count += 1
+
+            if not os.path.exists(OUTPUT_PATH):
+                os.makedirs(OUTPUT_PATH)
+
+            filename = os.path.join(OUTPUT_PATH, f"{i}-train-{cnt}.png")
+            im = Image.fromarray(image_array)
+            im.save(filename)
