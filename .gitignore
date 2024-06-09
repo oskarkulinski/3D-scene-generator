@@ -163,3 +163,4 @@ cython_debug/
 dataset_cache.npz
 saved_models
 selected_data
+selected_data_rooms
