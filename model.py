@@ -113,5 +113,5 @@ class SceneGenerator:
         fig, axs = plt.subplots(params.display_amount_height, params.display_amount_width, figsize=(4, 4))
         for i in range(params.display_amount_height):
             for j in range(params.display_amount_width):
-                axs[i, j].imshow(gen_images[i, j, :, :])
+                axs[i][j].imshow(gen_images[i * params.display_amount_height + j])
         plt.show()

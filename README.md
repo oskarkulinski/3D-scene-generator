@@ -13,4 +13,4 @@ A generative adversarial network creating images of buildings in 128x128 resolut
 
 If you want to use the model trained by us, choose to load an existing model,
 otherwise download the architecture dataset linked above, 
-and extract all the class directories that you wish to use into selected_data
+and extract all the class directories that you wish to use into selected_data.
