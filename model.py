@@ -7,8 +7,7 @@ from PIL import Image
 import parameters as params
 from discriminator import build_discriminator
 from generator import build_generator
-import logging
-SEED_SIZE = 100
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 
@@ -18,14 +17,14 @@ GENERATE_SQUARE = 32 * GENERATE_RES
 PREVIEW_ROWS = 4
 PREVIEW_COLS = 7
 PREVIEW_MARGIN = 16
-OUTPUT_PATH = r'C:\Users\kajet\OneDrive\Pulpit\PSI\Projekt\3D-scene-generator\Output'
+OUTPUT_PATH = "./output"
 class SceneGenerator:
     def __init__(self):
         self.discriminator = build_discriminator()
         self.generator = build_generator()
 
-        self.generator_optimizer = tf.keras.optimizers.Adam(1.5e-4,0.7)
-        self.discriminator_optimizer = tf.keras.optimizers.Adam(1.0e-4,0.7)
+        self.generator_optimizer = tf.keras.optimizers.Adam(1.5e-4,0.5)
+        self.discriminator_optimizer = tf.keras.optimizers.Adam(1.0e-4,0.5)
 
         noise_input = tf.keras.layers.Input(shape=(params.noise_dim,))
         label_input = tf.keras.layers.Input(shape=(params.num_classes,))
@@ -103,7 +102,9 @@ class SceneGenerator:
             g_loss: float = sum(gen_loss_list) / len(gen_loss_list)
             d_loss: float = sum(disc_loss_list) / len(disc_loss_list)
             print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}]")
-            self.save_images(epoch, np.random.normal(0, 1, (PREVIEW_ROWS * PREVIEW_COLS, SEED_SIZE)))
+            # If at save interval, save generated image samples
+            if epoch % sample_interval == 0:
+                self.save_images(epoch, np.random.normal(0, 1, (PREVIEW_ROWS * PREVIEW_COLS, params.noise_dim)))
             # If at save interval, save generated image samples
             # if epoch % sample_interval == 0:
             #    self.sample_images(epoch)
