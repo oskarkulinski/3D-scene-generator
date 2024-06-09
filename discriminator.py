@@ -23,7 +23,7 @@ def build_discriminator():
     conv2d_4 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv2d_4)
     conv2d_4 = tf.keras.layers.LeakyReLU(alpha=0.2)(conv2d_4)
 
-    flatten = tf.keras.layers.Flatten()(conv2d_4)
+    flatten = tf.keras.layers.Flatten()(conv2d_3)
     dense_1 = tf.keras.layers.Dense(1, activation='sigmoid')(flatten)
 
     model = tf.keras.Model(image_input, outputs=dense_1)
