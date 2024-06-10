@@ -17,7 +17,7 @@ class SceneGenerator:
         self.discriminator = build_discriminator()
         self.generator = build_generator()
         self.generator_optimizer = tf.keras.optimizers.Adam(1.5e-4, 0.5)
-        self.discriminator_optimizer = tf.keras.optimizers.Adam(1.0e-4, 0.5)
+        self.discriminator_optimizer = tf.keras.optimizers.Adam(1.5e-4, 0.5)
         noise_input = tf.keras.layers.Input(shape=(params.noise_dim,))
         generated_image = self.generator(noise_input)
         validity = self.discriminator(generated_image)
