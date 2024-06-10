@@ -78,7 +78,7 @@ class SceneGenerator:
             g_loss: float = sum(gen_loss_list) / len(gen_loss_list)
             d_loss: float = sum(disc_loss_list) / len(disc_loss_list)
             end = time_ns()
-            print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}] Time: {(end - start) * 0.000001:.3f}s]")
+            print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}] Time: {(end - start) * 0.000000001:.3f}s]")
 
             if epoch % params.sample_interval == 0 and epoch != 0:
                 self.sample_images()
@@ -112,4 +112,5 @@ class SceneGenerator:
         for i in range(params.display_amount_height):
             for j in range(params.display_amount_width):
                 axs[i][j].imshow(gen_images[i * params.display_amount_height + j])
+                axs[i][j].axis('off')
         plt.show()
