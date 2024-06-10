@@ -9,7 +9,7 @@ def build_discriminator():
 
     conv2d_1 = tf.keras.layers.Conv2D(256, kernel_size=3, strides=2, padding='same')(image_input)
     conv2d_1 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv2d_1)
-    conv2d_1 = tf.keras.layers.LeakyReLU(alpha=0.3)(conv2d_1)
+    conv2d_1 = tf.keras.layers.LeakyReLU(alpha=0.2)(conv2d_1)
 
     conv2d_2 = tf.keras.layers.Conv2D(128, kernel_size=3, strides=2, padding='same')(conv2d_1)
     conv2d_2 = tf.keras.layers.BatchNormalization(momentum=0.8)(conv2d_2)
