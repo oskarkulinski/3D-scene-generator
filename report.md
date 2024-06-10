@@ -45,4 +45,17 @@ się podziału na klasy, w celu uproszczenia modelu. Przetestowaliśmy jednocze�
 ze zwiększaniem rozmiaru zdjęć przy pomocy upsamplingu i strides=2 w transpose konwolucji.
 Upsampling przynióśł niezłe rezultaty, ale po 200 epokach uczenie zakończyło się z powodu problemów
 technicznych. Wersja 2 przyniosła bardzo dobre wyniki, generowała dosyć różnorodne zdjęcia, z których
-wiele w sporym stopniu przypominało budynki.
+wiele w sporym stopniu przypominało budynki. Po raz pierwszy ograniczeniem okazał się dyskriminator,
+generator był w stanie regularnie go oszukiwać. Zadecydowaliśmy o dodaniu większej ilości filtrów w dyskriminatorze.
+
+6. Podsumowanie uczenia:
+- learning rate w okolicach x.e-4 dawał najlepsze efekty, przy większym nie było zbieżności, przy mniejszym 
+uczył się za wolno
+- w generatorze transpose convolution sprawdziło się najlepiej, w dyskriminatorze zwykła convolucja
+- strides w konwolucji nieco stabilizował uczenie się, w porównaniu do upsamplingu/downsamplingu
+- dropout przy pewnych modelach poprawiał rezultaty, ale gdy zmieniliśmy dataset doprowadził do
+generowania jednokolorowych plam
+- batch normalization poprawiało wyniki, z momentum 0.8, większe powodowowało zbyt wolne uczenie, mniejsze prowadziło
+do niestabilnośći
+- 1000 epok mało kiedy poprawiało wyniki, po około 500 poprawki były niewielkie
+- warstwy dense w generatorze lub dyskriminatorze pogarszało wyniki
