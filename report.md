@@ -7,7 +7,7 @@ ale brak szczegółów i kształty są nierealistyczne.
 jej prostotę, łatwość kontrolowania efektów, oraz dużą możliwość dostosowywania parametrów.   
 
      
-3. Strategia Podziału Danych: Nie dzielimy danych, testowania dokonujemy wzrokowo, 
+3. Strategia Podziału Danych: Nie dzielimy danych, testowania dokonujemy wizualnie, 
 ze względu na trudność zmierzenia efektów pracy GANa, bez osobnego modelu.
 Nie używamy walidacji, gdyż nie mieliśmy na żadnym etapie pracy problemem z wynikami
 dyskriminatora. Mieliśmy w planach dodanie walidacji, gdyby taki problem się pojawił,
@@ -22,7 +22,8 @@ realistyczne obiekty, jak krzesła czy szafki z książkami.
 Ostatecznie zmieniliśmy dataset na zdjęcia budynków, gdyż nie udawało nam się osiągnąć
 znacznego postępu przez 5 dni. Zdecydowaliśmy że zdjęcia pokojów mogą zawierać zbyt dużo
 różnorodnych obiektów, a po krótkich testach wyniki na architekturze były znacznie bardziej
-obiecujące niż na pokojach.
+obiecujące niż na pokojach. Prostsze kształty i mniejsza różnorodność bardzo pozytywnie wpłynęły
+na wyniki modelu
 
 
 5. Analiza Wyników: Początkowo wyniki były fatalne, zmiany modelu nic nie dawały, po 2 dniach
@@ -36,5 +37,12 @@ efekty były niezłe, ale model regularnie po około 300 - 500 epoce przestawał
 postępy, a nie generował zbyt realistycznych obrazów. Spróbowaliśmy uprościć dyskriminator, co lekko
 pomogło, ale wyniki wciąż nie były zbyt realistyczne. Próbowaliśmy zmienić wykorzystywane klasy, a potem
 zwiększyliśmy ilość klas do 10, ale to przyniosło rezultaty odwrotne do oczekiwanych, model tworzył bardziej
-niewyraźne kszałty, i rzadziej generował obiekty typu krzesła czy szafki.   
-W obec tego jednocześnie próbowaliśmy.
+niewyraźne kszałty, i rzadziej generował obiekty typu krzesła czy szafki.
+W obec tego jednocześnie spróbowaliśmy zmienić dataset na zdjęcia architektury. Na tym datasecie efekty były
+w bardzo krótkim czasie całkiem zadowalające. Jako że na datasecie pokoi nie udało się od 5 dni zrobić
+żadnego znaczącego postępu, podjęliśmy decyzję o przerzuceniu się na datest architektur i pozbyciu
+się podziału na klasy, w celu uproszczenia modelu. Przetestowaliśmy jednocześnie wersję generatora
+ze zwiększaniem rozmiaru zdjęć przy pomocy upsamplingu i strides=2 w transpose konwolucji.
+Upsampling przynióśł niezłe rezultaty, ale po 200 epokach uczenie zakończyło się z powodu problemów
+technicznych. Wersja 2 przyniosła bardzo dobre wyniki, generowała dosyć różnorodne zdjęcia, z których
+wiele w sporym stopniu przypominało budynki.
