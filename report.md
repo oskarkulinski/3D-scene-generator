@@ -64,9 +64,12 @@ ograniczeniem okazał się dyskriminator, generator był w stanie regularnie go
 oszukiwać. Zadecydowaliśmy o dodaniu większej ilości filtrów w dyskriminatorze.
 To nieco pomogło, i tak wygląda ostateczny model.
 
+
 - Wyniki ostateczne są całkiem zadowalające, dalsze ich poprawienie wymagałoby
 znacznej mocy obliczeniowej oraz czasu, ale nie powinno wymagać większych zmian
-parametrów ani struktury modelu.
+parametrów ani struktury modelu. Kszałty są nieco nieregularne, budynki często 
+wyglądają na nie do końca dokończone, efekt jest nieco dystopijny, ale jak najbardziej
+możliwym powinno być doprowadzenie go do realizmu.
 
 6. Podsumowanie uczenia:
 - learning rate w okolicach 1.5e-4 dawał najlepsze efekty, przy znacząco większym 
@@ -92,4 +95,5 @@ czasu
 - powrót do podziału na klasy byłby możliwy, ale wymagałby zwiększenia zarówno
 ilośći filtrów jak i najprawdopodobniej dłuższego uczenia
 - dodanie walidacji ułatwiłoby ocenianie wyników dyskriminatora, co mogłoby być cenne
-przy dokładnym tuningu modelu
+przy dokładnym tuningu modelu, jako że w końocowych fazach projektu udało się doprowadzić
+model do stane balansu.
