@@ -82,7 +82,7 @@ class SceneGenerator:
 
             if epoch % params.sample_interval == 0: #and epoch != 0:
                 self.sample_images()
-                self.save_generated_images(epoch)
+                #self.save_generated_images(epoch)
 
             if epoch != 0 and epoch % params.save_interval == 0:
                 sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
