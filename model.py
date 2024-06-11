@@ -80,8 +80,9 @@ class SceneGenerator:
             end = time_ns()
             print(f"{epoch}: [D loss: {d_loss}, [G loss: {g_loss}] Time: {(end - start) * 0.000000001:.3f}s]")
 
-            if epoch % params.sample_interval == 0 and epoch != 0:
+            if epoch % params.sample_interval == 0: #and epoch != 0:
                 self.sample_images()
+                self.save_generated_images(epoch)
 
             if epoch != 0 and epoch % params.save_interval == 0:
                 sub_folder_name = os.path.join(folder_name, f"epoch_{epoch}")
@@ -114,3 +115,20 @@ class SceneGenerator:
                 axs[i][j].imshow(gen_images[i * params.display_amount_height + j])
                 axs[i][j].axis('off')
         plt.show()
+
+    def save_generated_images(self, number):
+        noise = self.generate_noise(params.display_amount_height * params.display_amount_width, params.noise_dim)
+        gen_images = self.generator.predict(noise)
+        gen_images = 0.5 * gen_images + 0.5
+
+        fig, axs = plt.subplots(params.display_amount_height, params.display_amount_width, figsize=(4, 4))
+
+        for i in range(params.display_amount_height):
+            for j in range(params.display_amount_width):
+                axs[i][j].imshow(gen_images[i * params.display_amount_height + j])
+                axs[i][j].axis('off')
+
+        directory = "Screenshots"
+        filepath = os.path.join(directory, f"{number}.png")
+        plt.savefig(filepath)
+        plt.close(fig)
