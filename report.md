@@ -97,3 +97,39 @@ ilośći filtrów jak i najprawdopodobniej dłuższego uczenia
 - dodanie walidacji ułatwiłoby ocenianie wyników dyskriminatora, co mogłoby być cenne
 przy dokładnym tuningu modelu, jako że w końocowych fazach projektu udało się doprowadzić
 model do stane balansu.
+
+8. Przykładowe zdjęcia wygenerwane co 100 epok
+
+Przed uczeniem  
+![Przed uczeniem](sample_images/epoch_0.png)
+
+Po 100 epoce      
+![Po 100 epoce](sample_images/epoch_100.png)
+
+Po 200 epoce   
+![Po 200 epoce](sample_images/epoch_200.png)
+
+Po 300 epoce  
+![Po 300 epoce](sample_images/epoch_300.png)
+
+Po 400 epoce   
+![Po 400 epoce](sample_images/epoch_400.png)
+
+Po 500 epoce   
+![Po 500 epoce](sample_images/epoch_500.png)
+
+Po 600 epoce   
+![Po 600 epoce](sample_images/epoch_600.png)
+
+Po 700 epoce   
+![Po 700 epoce](sample_images/epoch_700.png)
+
+Po 800 epoce   
+![Po 800 epoce](sample_images/epoch_800.png)
+
+Po 900 epoce   
+![Po 900 epoce](sample_images/epoch_900.png)
+
+Po 1000 epoce   
+![Po 1000 epoce](sample_images/epoch_1000.png)
+

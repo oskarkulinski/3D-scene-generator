@@ -14,10 +14,16 @@ if train_choice == "1":
 else:
     model.load_models("main_model")
 
+save = input("Would you like to save the generated images to disk? [y/n]")
+i = 1
 while True:
     decision = input("If you want to quit type q, otherwise type g")
     if decision == "q":
         break
     else:
-        model.sample_images()
+        if save.lower() == "y":
+            model.save_generated_images(i)
+            i += 1
+        else:
+            model.sample_images()
 

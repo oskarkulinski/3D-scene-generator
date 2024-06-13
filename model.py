@@ -128,7 +128,7 @@ class SceneGenerator:
                 axs[i][j].imshow(gen_images[i * params.display_amount_height + j])
                 axs[i][j].axis('off')
 
-        directory = "Screenshots"
+        directory = "generated_images"
         filepath = os.path.join(directory, f"{number}.png")
         plt.savefig(filepath)
         plt.close(fig)
