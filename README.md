@@ -2,8 +2,13 @@
 ## Authors: Oskar Kuliński, Kajetan Ożóg
 
 Datesets used:   
-https://www.kaggle.com/datasets/itsahmad/indoor-scenes-cvpr-2019?select=TrainImages.txt   
-https://www.kaggle.com/datasets/wwymak/architecture-dataset
+https://www.kaggle.com/datasets/itsahmad/indoor-scenes-cvpr-2019?select=TrainImages.txt - MIT License
+
+https://www.kaggle.com/datasets/wwymak/architecture-dataset from 
+https://www.semanticscholar.org/paper/Architectural-Style-Classification-Using-Latent-Xu-Tao/bf6fd53680c5ec7b998c60bd75243d5b7cf7f93f?p2df - 
+CC BY-NC-SA 4.0
+
+
 
 A generative adversarial network creating images of buildings in 128x128 resolution
 
