@@ -1,6 +1,6 @@
 # 3D-scene-generator
 ## Authors: Oskar Kuliński, Kajetan Ożóg
-
+### A short report off our joruney with the project can be found in report_eng.md or report_pl.md
 Datesets used:   
 https://www.kaggle.com/datasets/itsahmad/indoor-scenes-cvpr-2019?select=TrainImages.txt - MIT License
 
@@ -18,7 +18,7 @@ A generative adversarial network creating images of buildings in 128x128 resolut
 
 If you want to use the model trained by us, choose to load an existing model,
 otherwise download the architecture dataset linked above, 
-and extract all the class directories that you wish to use into selected_data.
+and extract all the class directories that you wish to use into selected_data directory.
 
 ## Sample images
 
