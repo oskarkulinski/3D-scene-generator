@@ -1,6 +1,6 @@
 # 3D-scene-generator
 ## Authors: Oskar Kuliński, Kajetan Ożóg
-### A short report off our joruney with the project can be found in report_eng.md or report_pl.md
+### A short report of our joruney with the project can be found in report_eng.md or report_pl.md
 Datesets used:   
 https://www.kaggle.com/datasets/itsahmad/indoor-scenes-cvpr-2019?select=TrainImages.txt - MIT License
 
